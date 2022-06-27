@@ -13,8 +13,8 @@ create_post <- function(url = NULL, token = NULL) {
 	# 创建一个符合理杏仁要求的 POST 请求
 	httr::POST(
 		url = url,
-		config = add_headers("Content-Type" = "application/json"),
-		body = toJSON(list(token = unbox(Sys.getenv(token)))),
+		config = httr::add_headers("Content-Type" = "application/json"),
+		body = jsonlite::toJSON(list(token = unbox(Sys.getenv(token)))),
 		encode = "raw"
 	)
 }
@@ -31,5 +31,5 @@ get_cn_stock_code <- function(url = NULL, token = NULL) {
 		tibble::as_tibble(.) %>% 
 		tidyr::unnest_wider(data) %>% 
 		tidyr::unnest_longer(mutualMarkets) %>% 
-		dplyr::select(-c(code,message))
+		dplyr::select(-c(code, message))
 }
