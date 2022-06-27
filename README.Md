@@ -1,6 +1,6 @@
 # lixingR
 
-R 语言封装的理性仁接口。
+R 语言封装的理杏仁接口。
 
 ## 动机
 
@@ -16,7 +16,7 @@ R 语言封装的理性仁接口。
 * 中高级，实现大部分实用指标查询。
 * 高级，提供交互式分析服务。
 
-## 为什么选择理性仁
+## 为什么选择理杏仁
 
 * [产品、代码及投资 — 产品篇](https://www.lixinger.com/marketing/about-us-product)
 * [产品、代码及投资 — 代码篇](https://www.lixinger.com/marketing/about-us-coding)
