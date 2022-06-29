@@ -58,20 +58,17 @@ get_cn_stock_code <- function(token = NULL, stock_codes = NULL) {
     dplyr::select(-c(code, message))
 }
 
-get_fundamental <- function(financial_report_type = NULL, token = NULL,
-														start_date = NULL, end_date = NULL,
-                            stock_codes = NULL, metrics = NULL) {
+get_cn_fundamental <- function(financial_report_type = NULL, token = NULL, date = NULL,
+                               start_date = NULL, end_date = NULL,
+                               stock_codes = NULL, metrics = NULL) {
   url <- switch(financial_report_type,
     "non_financial" = "https://open.lixinger.com/api/cn/company/fundamental/non_financial",
     "bank" = "https://open.lixinger.com/api/cn/company/fundamental/bank",
     "insurance" = "https://open.lixinger.com/api/cn/company/fundamental/security",
     "security" = "https://open.lixinger.com/api/cn/company/fundamental/insurance",
   )
-  if (is.null(token)) {
-    token <- "token_lixingren"
-  }
   create_post(
-    url = url, token = token, start_date = start_date,
+    url = url, token = token, date = date, start_date = start_date,
     end_date = end_date, stock_codes = stock_codes, metrics = metrics
   ) %>%
     httr::content(., as = "parsed") %>%
