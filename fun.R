@@ -44,17 +44,12 @@ create_post <- function(url = NULL, token = NULL, date = NULL, start_date = NULL
   )
 }
 
-get_cn_stock_code <- function(url = NULL, token = NULL) {
-  # 获取大陆/公司接口/基础信息/获取所有股票信息
-  if (is.null(url)) {
-    url <- "https://open.lixinger.com/api/cn/company"
-  }
-  if (is.null(token)) {
-    token <- "token_lixingren"
-  }
+get_cn_stock_code <- function(token = NULL, stock_codes = NULL) {
+  # 获取大陆/公司接口/基础信息/获取所有&指定股票信息
   create_post(
-    url = url,
-    token = token
+    url = "https://open.lixinger.com/api/cn/company",
+    token = token,
+    stock_codes = stock_codes
   ) %>%
     httr::content(., as = "parsed") %>%
     tibble::as_tibble(.) %>%
