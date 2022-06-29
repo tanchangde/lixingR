@@ -17,7 +17,6 @@ create_post <- function(url = NULL, token = NULL, date = NULL, start_date = NULL
   } else {
     temp_body <- list(token = jsonlite::unbox(token))
   }
-
   if (!is.null(start_date) & !is.null(end_date)) {
     temp_body$startDate <- jsonlite::unbox(start_date)
     temp_body$endDate <- jsonlite::unbox(end_date)
@@ -33,9 +32,7 @@ create_post <- function(url = NULL, token = NULL, date = NULL, start_date = NULL
     } else {
       temp_body$stockCodes <- stock_codes
     }
-    
   }
-
   if (!is.null(metrics)) {
     temp_body$metricsList <- metrics
   }
