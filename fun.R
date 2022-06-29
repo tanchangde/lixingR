@@ -9,21 +9,33 @@ library(magrittr)
 
 Sys.setenv(token_lixingren = "8c1e6a2b-3e45-45bc-952c-84e9df3b3d0a")
 
-create_post <- function(url = NULL, token = NULL, start_date = NULL,
+create_post <- function(url = NULL, token = NULL, date = NULL, start_date = NULL,
                         end_date = NULL, stock_codes = NULL, metrics = NULL) {
   # 创建一个符合理杏仁要求的 POST 请求
-  temp_body <- list(token = jsonlite::unbox(Sys.getenv(token)))
+  if (is.null(token)) {
+    temp_body <- list(token = jsonlite::unbox(Sys.getenv("token_lixingren")))
+  } else {
+    temp_body <- list(token = jsonlite::unbox(token))
+  }
+
   if (!is.null(start_date) & !is.null(end_date)) {
     temp_body$startDate <- jsonlite::unbox(start_date)
     temp_body$endDate <- jsonlite::unbox(end_date)
   }
-  if (length(stock_codes) == 1) {
+  if (!is.null(start_date) & length(stock_codes) == 1) {
     temp_body$stockCodes <- stock_codes
-  } else if (length(stock_codes) > 1) {
-    stop("'stock_codes' must contain only 1 items",
-      call. = FALSE
-    )
+  } else if (!is.null(start_date) & length(stock_codes) > 1) {
+    stop("'stock_codes' must contain only 1 items", call. = FALSE)
+  } else if (is.null(start_date) & is.null(end_date) & !is.null(stock_codes)) {
+    if (!is.null(date)) {
+      temp_body$date <- jsonlite::unbox(date)
+      temp_body$stockCodes <- stock_codes
+    } else {
+      temp_body$stockCodes <- stock_codes
+    }
+    
   }
+
   if (!is.null(metrics)) {
     temp_body$metricsList <- metrics
   }
