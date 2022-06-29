@@ -4,7 +4,8 @@ library(dplyr)
 library(tidyr)
 library(magrittr)
 
-# 请注册或登录理杏仁在 https://www.lixinger.com/open/api/token 获得自己的 Token
+# 请注册或登录理杏仁
+# 在 https://www.lixinger.com/open/api/token 获得自己的 Token
 # 替换 “token_lixingren” 的值
 
 Sys.setenv(token_lixingren = "8c1e6a2b-3e45-45bc-952c-84e9df3b3d0a")
