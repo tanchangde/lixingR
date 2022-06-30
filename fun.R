@@ -4,12 +4,6 @@ library(dplyr)
 library(tidyr)
 library(magrittr)
 
-# 1.注册或登录理杏仁后
-# 2.在 https://www.lixinger.com/open/api/token 获得 Token
-# 3.R 控制台, file.edit("~/.Renviron") 打开的文件增补以下新行(不含 # 号)
-# token_lixingren = "步骤 2 获得的 Token"
-# 4. 保存并关闭 .Renviron 文件
-
 create_post <- function(url = NULL, token = NULL, date = NULL, start_date = NULL,
                         end_date = NULL, stock_codes = NULL, metrics = NULL) {
   if (is.null(token)) {
