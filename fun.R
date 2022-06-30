@@ -59,7 +59,7 @@ get_cn_stock_code <- function(token = NULL, stock_codes = NULL) {
     dplyr::select(-c(code, message))
 }
 
-get_cn_fundamental <- function(financial_report_type = NULL, token = NULL, date = NULL,
+get_cn_fundamental <- function(financial_report_type = "non_financial", token = NULL, date = NULL,
                                start_date = NULL, end_date = NULL,
                                stock_codes = NULL, metrics = NULL) {
   # 获取基本面数据，如 PE、PB 等
@@ -68,6 +68,7 @@ get_cn_fundamental <- function(financial_report_type = NULL, token = NULL, date 
     "bank" = "https://open.lixinger.com/api/cn/company/fundamental/bank",
     "insurance" = "https://open.lixinger.com/api/cn/company/fundamental/security",
     "security" = "https://open.lixinger.com/api/cn/company/fundamental/insurance",
+    stop("Unknown `financial_report_type`", call. = FALSE)
   )
   create_post(
     url = url, token = token, date = date, start_date = start_date,
