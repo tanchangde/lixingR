@@ -18,31 +18,35 @@ create_post <- function(url = NULL, token = NULL, date = NULL, start_date = NULL
   } else {
     temp_body <- list(token = jsonlite::unbox(token))
   }
-  if (!is.null(start_date) & !is.null(end_date)) {
+  if (!is.null(start_date)) {
     temp_body$startDate <- jsonlite::unbox(start_date)
+  }
+  if (!is.null(end_date)) {
     temp_body$endDate <- jsonlite::unbox(end_date)
   }
-  if (!is.null(start_date) & length(stock_codes) == 1) {
+  if (!is.null(stock_codes)) {
     temp_body$stockCodes <- stock_codes
-  } else if (!is.null(start_date) & length(stock_codes) > 1) {
-    stop("'stock_codes' must contain only 1 items", call. = FALSE)
-  } else if (is.null(start_date) & is.null(end_date) & !is.null(stock_codes)) {
-    if (!is.null(date)) {
-      temp_body$date <- jsonlite::unbox(date)
-      temp_body$stockCodes <- stock_codes
-    } else {
-      temp_body$stockCodes <- stock_codes
-    }
+  }
+  if (!is.null(date)) {
+    temp_body$date <- jsonlite::unbox(date)
   }
   if (!is.null(metrics)) {
     temp_body$metricsList <- metrics
   }
-  httr::POST(
+  temp_POST <- httr::POST(
     url = url,
     config = httr::add_headers("Content-Type" = "application/json"),
     body = jsonlite::toJSON(temp_body),
     encode = "raw"
   )
+  if (http_error(temp_POST)) {
+    temp_content <- httr::content(temp_POST, as = "parsed", encoding = "utf-8")
+    cat("Error:", temp_content$error$name, "\n")
+    cat("ErrorPositon:", temp_content$error$messages[[1]]$path[[1]], "\n")
+    cat("Hint:", temp_content$error$messages[[1]]$message, "\n")
+  } else {
+    temp_POST
+  }
 }
 
 get_cn_stock_code <- function(token = NULL, stock_codes = NULL) {
