@@ -78,7 +78,7 @@ get_cn_fundamental <- function(financial_report_type = "non_financial", token = 
     url = url, token = token, date = date, start_date = start_date,
     end_date = end_date, stock_codes = stock_codes, metrics = metrics
   ) %>%
-    httr::content(., as = "parsed") %>%
+    httr::content(., as = "parsed", encoding = "utf-8") %>%
     tibble::as_tibble(.) %>%
     tidyr::unnest_wider(., col = data) %>%
     dplyr::select(-c(code, message))
