@@ -4,11 +4,11 @@ library(dplyr)
 library(tidyr)
 library(magrittr)
 
-# 请注册或登录理杏仁
-# 在 https://www.lixinger.com/open/api/token 获得自己的 Token
-# 替换 “token_lixingren” 的值
-
-Sys.setenv(token_lixingren = "8c1e6a2b-3e45-45bc-952c-84e9df3b3d0a")
+# 1.注册或登录理杏仁后
+# 2.在 https://www.lixinger.com/open/api/token 获得 Token
+# 3.R 控制台, file.edit("~/.Renviron") 打开的文件增补以下新行(不含 # 号)
+# token_lixingren = "步骤 2 获得的 Token"
+# 4. 保存并关闭 .Renviron 文件
 
 create_post <- function(url = NULL, token = NULL, date = NULL, start_date = NULL,
                         end_date = NULL, stock_codes = NULL, metrics = NULL) {
