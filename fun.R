@@ -12,7 +12,6 @@ library(magrittr)
 
 create_post <- function(url = NULL, token = NULL, date = NULL, start_date = NULL,
                         end_date = NULL, stock_codes = NULL, metrics = NULL) {
-  # 创建一个符合理杏仁要求的 POST 请求
   if (is.null(token)) {
     temp_body <- list(token = jsonlite::unbox(Sys.getenv("token_lixingren")))
   } else {
@@ -50,7 +49,6 @@ create_post <- function(url = NULL, token = NULL, date = NULL, start_date = NULL
 }
 
 get_cn_stock_code <- function(token = NULL, stock_codes = NULL) {
-  # 获取大陆/公司接口/基础信息/获取所有&指定股票信息
   create_post(
     url = "https://open.lixinger.com/api/cn/company",
     token = token,
@@ -66,7 +64,6 @@ get_cn_stock_code <- function(token = NULL, stock_codes = NULL) {
 get_cn_fundamental <- function(financial_report_type = "non_financial", token = NULL, date = NULL,
                                start_date = NULL, end_date = NULL,
                                stock_codes = NULL, metrics = NULL) {
-  # 获取基本面数据，如 PE、PB 等
   url <- switch(financial_report_type,
     "non_financial" = "https://open.lixinger.com/api/cn/company/fundamental/non_financial",
     "bank" = "https://open.lixinger.com/api/cn/company/fundamental/bank",
