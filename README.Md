@@ -5,7 +5,7 @@ R 语言封装的理杏仁接口。
 ## 用法
 
 * 注册或登录理杏仁后，在 [开放平台](https://www.lixinger.com/open/api/token) 获得 Token。
-* 在 R 控制台输入 `file.edit("~/.Renviron")` 打开的文件增补新行：`token_lixingren = "步骤 2 获得的 Token"`。
+* 在 R 控制台输入 `file.edit("~/.Renviron")` 后，在打开的文件中增补新行：`token_lixingren = "步骤 2 获得的 Token"`。
 * 保存并关闭 `.Renviron` 文件，然后在 R 会话中运行一遍 `fun.R` 文件，即按需可调用函数。用例待补充...
 
 ## 动机
@@ -41,6 +41,7 @@ R 语言封装的理杏仁接口。
 
 ## ChangeLog
 
+* 220630 changde 增补用法
 * 220629 changde
 	* 调整目标优先级
 	*	增补参考文献及润色
