@@ -51,10 +51,10 @@ get_cn_stock_code <- function(token = NULL, stock_codes = NULL) {
     token = token,
     stock_codes = stock_codes
   ) %>%
-    httr::content(., as = "parsed", encoding = "utf-8") %>%
-    tibble::as_tibble(.) %>%
-    tidyr::unnest_wider(., col = data) %>%
-    tidyr::unnest_longer(., col = mutualMarkets) %>%
+    magrittr::use_series(content) %>%
+    rawToChar(.) %>%
+    jsonlite::fromJSON(.) %>%
+    as.data.frame(.) %>%
     dplyr::select(-c(code, message))
 }
 
