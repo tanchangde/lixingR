@@ -77,7 +77,7 @@ create_post <- function(url = NULL, api_type = NULL, token = NULL, fs_type = NUL
   }
 }
 
-get_cn_stock_code <- function(token = NULL, fs_type = NULL, mutual_markets = NULL,
+get_cn_company <- function(token = NULL, fs_type = NULL, mutual_markets = NULL,
                               stock_codes = NULL, include_delisted = NULL) {
   url <- "https://open.lixinger.com/api/cn/company"
   api_type <- url %>%
