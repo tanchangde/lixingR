@@ -33,12 +33,13 @@ create_post <- function(url = NULL, token = NULL, date = NULL, start_date = NULL
     encode = "raw"
   )
   if (http_error(temp_POST)) {
-    temp_content <- httr::content(temp_POST, as = "parsed", encoding = "utf-8")
-    temp_error <-  paste0(
-      "\n Type:", temp_content$error$name, "\n",
-      "Message:", temp_content$error$messages[[1]]$message, "\n",
-      "Positon:", temp_content$error$messages[[1]]$path[[1]], "\n")
-    stop(temp_error, call. = FALSE)
+    temp_error <- temp_POST %>%
+      magrittr::use_series(content) %>%
+      rawToChar(.) %>%
+      jsonlite::fromJSON(.) %>%
+      magrittr::use_series(error)
+    print(temp_error)
+    stop("The query failed, please check the above error.", call. = FALSE)
   } else {
     temp_POST
   }
