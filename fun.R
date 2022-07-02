@@ -28,23 +28,25 @@ create_post <- function(url = NULL, api_type = NULL, token = NULL, fs_type = NUL
   if (!is.null(include_delisted)) {
     temp_body$includeDelisted <- jsonlite::unbox(include_delisted)
   }
-  if (!is.null(stock_codes)  &
-      api_type %in% c("company", "company_hot_tr_dri",
-                      "company_hot_mm_ha", "company_hot_mtasl",
-                      "company_hot_esc", "company_hot_elr",
-                      "company_hot_ple", "company_hot_shnc",
-                      "company_hot_df", "company_fundamental_non_financial",
-                      "company_fundamental_non_financial",
-                      "company_fundamental_bank",
-                      "company_fundamental_security",
-                      "company_fundamental_insurance",
-                      "company_fs_non_financial",
-                      "company_fs_bank", "company_fs_security",
-                      "company_fs_insurance", "index",
-                      "index_fundamental", "index_fs",
-                      "index_constituents", "index_hot_mm_ha",
-                      "index_hot_mtasl", "index_hot_cp",
-                      "index_hot_tr_cp")) {
+  if (!is.null(stock_codes) &
+    api_type %in% c(
+      "company", "company_hot_tr_dri",
+      "company_hot_mm_ha", "company_hot_mtasl",
+      "company_hot_esc", "company_hot_elr",
+      "company_hot_ple", "company_hot_shnc",
+      "company_hot_df", "company_fundamental_non_financial",
+      "company_fundamental_non_financial",
+      "company_fundamental_bank",
+      "company_fundamental_security",
+      "company_fundamental_insurance",
+      "company_fs_non_financial",
+      "company_fs_bank", "company_fs_security",
+      "company_fs_insurance", "index",
+      "index_fundamental", "index_fs",
+      "index_constituents", "index_hot_mm_ha",
+      "index_hot_mtasl", "index_hot_cp",
+      "index_hot_tr_cp"
+    )) {
     temp_body$stockCodes <- stock_codes
   } else if (!is.null(stock_codes)) {
     temp_body$stockCodes <- jsonlite::unbox(stock_codes)
@@ -78,7 +80,7 @@ create_post <- function(url = NULL, api_type = NULL, token = NULL, fs_type = NUL
 }
 
 get_cn_company <- function(token = NULL, fs_type = NULL, mutual_markets = NULL,
-                              stock_codes = NULL, include_delisted = NULL) {
+                           stock_codes = NULL, include_delisted = NULL) {
   url <- "https://open.lixinger.com/api/cn/company"
   api_type <- url %>%
     stringr::str_match(., "company.*$") %>%
@@ -99,19 +101,24 @@ get_cn_company <- function(token = NULL, fs_type = NULL, mutual_markets = NULL,
     dplyr::select(-c(code, message))
 }
 
-get_cn_fundamental <- function(financial_report_type = "non_financial", token = NULL, date = NULL,
+get_cn_fundamental <- function(financial_report_type = "non_financial",
+                               token = NULL, date = NULL,
                                start_date = NULL, end_date = NULL,
                                stock_codes = NULL, metrics = NULL) {
   url <- switch(financial_report_type,
+    "bank"          = "https://open.lixinger.com/api/cn/company/fundamental/bank",
+    "insurance"     = "https://open.lixinger.com/api/cn/company/fundamental/security",
+    "security"      = "https://open.lixinger.com/api/cn/company/fundamental/insurance",
     "non_financial" = "https://open.lixinger.com/api/cn/company/fundamental/non_financial",
-    "bank" = "https://open.lixinger.com/api/cn/company/fundamental/bank",
-    "insurance" = "https://open.lixinger.com/api/cn/company/fundamental/security",
-    "security" = "https://open.lixinger.com/api/cn/company/fundamental/insurance",
     stop("Unknown `financial_report_type`", call. = FALSE)
   )
+  api_type <- url %>%
+    stringr::str_match(., "company.*$") %>%
+    stringr::str_replace_all(., "/", "_")
   create_post(
-    url = url, token = token, date = date, start_date = start_date,
-    end_date = end_date, stock_codes = stock_codes, metrics = metrics
+    url = url, api_type = api_type, token = token, date = date,
+    start_date = start_date, end_date = end_date, stock_codes = stock_codes,
+    metrics = metrics
   ) %>%
     httr::content(., as = "parsed", encoding = "utf-8") %>%
     tibble::as_tibble(.) %>%
