@@ -4,12 +4,17 @@ library(dplyr)
 library(tidyr)
 library(magrittr)
 
-create_post <- function(url = NULL, token = NULL, date = NULL, start_date = NULL,
-                        end_date = NULL, stock_codes = NULL, metrics = NULL) {
+create_post <- function(url = NULL, api_type = NULL, token = NULL, fs_type = NULL,
+                        date = NULL, start_date = NULL, end_date = NULL,
+                        mutual_markets = NULL, include_delisted = NULL,
+                        stock_codes = NULL, metrics = NULL, granularity = NULL) {
   if (is.null(token)) {
     temp_body <- list(token = jsonlite::unbox(Sys.getenv("token_lixingren")))
   } else {
     temp_body <- list(token = jsonlite::unbox(token))
+  }
+  if (!is.null(fs_type)) {
+    temp_body$fsType <- jsonlite::unbox(fs_type)
   }
   if (!is.null(start_date)) {
     temp_body$startDate <- jsonlite::unbox(start_date)
@@ -17,8 +22,32 @@ create_post <- function(url = NULL, token = NULL, date = NULL, start_date = NULL
   if (!is.null(end_date)) {
     temp_body$endDate <- jsonlite::unbox(end_date)
   }
-  if (!is.null(stock_codes)) {
+  if (!is.null(mutual_markets)) {
+    temp_body$mutualMarkets <- mutual_markets
+  }
+  if (!is.null(include_delisted)) {
+    temp_body$includeDelisted <- jsonlite::unbox(include_delisted)
+  }
+  if (!is.null(stock_codes)  &
+      api_type %in% c("company", "company_hot_tr_dri",
+                      "company_hot_mm_ha", "company_hot_mtasl",
+                      "company_hot_esc", "company_hot_elr",
+                      "company_hot_ple", "company_hot_shnc",
+                      "company_hot_df", "company_fundamental_non_financial",
+                      "company_fundamental_non_financial",
+                      "company_fundamental_bank",
+                      "company_fundamental_security",
+                      "company_fundamental_insurance",
+                      "company_fs_non_financial",
+                      "company_fs_bank", "company_fs_security",
+                      "company_fs_insurance", "index",
+                      "index_fundamental", "index_fs",
+                      "index_constituents", "index_hot_mm_ha",
+                      "index_hot_mtasl", "index_hot_cp",
+                      "index_hot_tr_cp")) {
     temp_body$stockCodes <- stock_codes
+  } else if (!is.null(stock_codes)) {
+    temp_body$stockCodes <- jsonlite::unbox(stock_codes)
   }
   if (!is.null(date)) {
     temp_body$date <- jsonlite::unbox(date)
@@ -26,13 +55,16 @@ create_post <- function(url = NULL, token = NULL, date = NULL, start_date = NULL
   if (!is.null(metrics)) {
     temp_body$metricsList <- metrics
   }
+  if (!is.null(granularity)) {
+    temp_body$granularity <- granularity
+  }
   temp_POST <- httr::POST(
     url = url,
     config = httr::add_headers("Content-Type" = "application/json"),
     body = jsonlite::toJSON(temp_body),
     encode = "raw"
   )
-  if (http_error(temp_POST)) {
+  if (httr::http_error(temp_POST)) {
     temp_error <- temp_POST %>%
       magrittr::use_series(content) %>%
       rawToChar(.) %>%
