@@ -34,9 +34,11 @@ create_post <- function(url = NULL, token = NULL, date = NULL, start_date = NULL
   )
   if (http_error(temp_POST)) {
     temp_content <- httr::content(temp_POST, as = "parsed", encoding = "utf-8")
-    cat("Error:", temp_content$error$name, "\n")
-    cat("ErrorPositon:", temp_content$error$messages[[1]]$path[[1]], "\n")
-    cat("Hint:", temp_content$error$messages[[1]]$message, "\n")
+    temp_error <-  paste0(
+      "\n Type:", temp_content$error$name, "\n",
+      "Message:", temp_content$error$messages[[1]]$message, "\n",
+      "Positon:", temp_content$error$messages[[1]]$path[[1]], "\n")
+    stop(temp_error, call. = FALSE)
   } else {
     temp_POST
   }
