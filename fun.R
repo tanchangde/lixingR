@@ -77,11 +77,20 @@ create_post <- function(url = NULL, api_type = NULL, token = NULL, fs_type = NUL
   }
 }
 
-get_cn_stock_code <- function(token = NULL, stock_codes = NULL) {
+get_cn_stock_code <- function(token = NULL, fs_type = NULL, mutual_markets = NULL,
+                              stock_codes = NULL, include_delisted = NULL) {
+  url <- "https://open.lixinger.com/api/cn/company"
+  api_type <- url %>%
+    stringr::str_match(., "company.*$") %>%
+    stringr::str_replace(., "/", "_")
   create_post(
-    url = "https://open.lixinger.com/api/cn/company",
+    url = url,
+    api_type = api_type,
     token = token,
-    stock_codes = stock_codes
+    fs_type = fs_type,
+    mutual_markets = mutual_markets,
+    stock_codes = stock_codes,
+    include_delisted = include_delisted
   ) %>%
     magrittr::use_series(content) %>%
     rawToChar(.) %>%
