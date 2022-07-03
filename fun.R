@@ -7,7 +7,8 @@ library(magrittr)
 create_post <- function(url = NULL, api_type = NULL, token = NULL, fs_type = NULL,
                         date = NULL, start_date = NULL, end_date = NULL,
                         mutual_markets = NULL, include_delisted = NULL,
-                        stock_codes = NULL, metrics = NULL, granularity = NULL) {
+                        stock_codes = NULL, metrics = NULL, granularity = NULL,
+                        rights_type = NULL) {
   if (is.null(token)) {
     temp_body <- list(token = jsonlite::unbox(Sys.getenv("token_lixingren")))
   } else {
@@ -59,6 +60,9 @@ create_post <- function(url = NULL, api_type = NULL, token = NULL, fs_type = NUL
   }
   if (!is.null(granularity)) {
     temp_body$granularity <- granularity
+  }
+  if (!is.null(rights_type)) {
+    temp_body$type <- jsonlite::unbox(rights_type)
   }
   temp_POST <- httr::POST(
     url = url,
@@ -203,6 +207,23 @@ get_cn_company_block_deal <- function(token = NULL, start_date = NULL,
   create_post(
     url = url, api_type = api_type, token = token, start_date = start_date,
     end_date = end_date, stock_codes = stock_code
+  ) %>%
+    httr::content(., as = "parsed", encoding = "utf-8") %>%
+    tibble::as_tibble(.) %>%
+    tidyr::unnest_wider(., col = data) %>%
+    dplyr::select(-c(code, message))
+}
+
+get_cn_company_candlestick <- function(token = NULL, rights_type = NULL,
+                                       start_date = NULL, end_date = NULL,
+                                       stock_code = NULL) {
+  url <- "https://open.lixinger.com/api/cn/company/candlestick"
+  api_type <- url %>%
+    stringr::str_match(., "company.*$") %>%
+    stringr::str_replace_all(., "/", "_")
+  create_post(
+    url = url, api_type = api_type, token = token, start_date = start_date,
+    end_date = end_date, stock_codes = stock_code, rights_type = rights_type
   ) %>%
     httr::content(., as = "parsed", encoding = "utf-8") %>%
     tibble::as_tibble(.) %>%
