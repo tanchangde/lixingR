@@ -101,7 +101,7 @@ get_cn_company <- function(token = NULL, fs_type = NULL, mutual_markets = NULL,
     dplyr::select(-c(code, message))
 }
 
-get_cn_fundamental <- function(financial_report_type = "non_financial",
+get_cn_company_fundamental <- function(financial_report_type = "non_financial",
                                token = NULL, date = NULL,
                                start_date = NULL, end_date = NULL,
                                stock_codes = NULL, metrics = NULL) {
