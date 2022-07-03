@@ -162,6 +162,22 @@ get_cn_company_senior_executive_shares_change <- function(token = NULL, start_da
     dplyr::select(-c(code, message))
 }
 
+get_cn_company_shareholders_num <- function(token = NULL, start_date = NULL,
+                                            end_date = NULL, stock_code = NULL) {
+  url <- "https://open.lixinger.com/api/cn/company/shareholders-num"
+  api_type <- url %>%
+    stringr::str_match(., "company.*$") %>%
+    stringr::str_replace_all(., "/", "_")
+  create_post(
+    url = url, api_type = api_type, token = token, start_date = start_date,
+    end_date = end_date, stock_codes = stock_code
+  ) %>%
+    httr::content(., as = "parsed", encoding = "utf-8") %>%
+    tibble::as_tibble(.) %>%
+    tidyr::unnest_wider(., col = data) %>%
+    dplyr::select(-c(code, message))
+}
+
 get_cn_company_fundamental <- function(financial_report_type = "non_financial",
                                token = NULL, date = NULL,
                                start_date = NULL, end_date = NULL,
