@@ -102,14 +102,14 @@ get_cn_company <- function(token = NULL, fs_type = NULL, mutual_markets = NULL,
 }
 
 get_cn_company_equity_change <- function(token = NULL, start_date = NULL,
-                                         end_date = NULL, stock_codes = NULL) {
+                                         end_date = NULL, stock_code = NULL) {
   url <- "https://open.lixinger.com/api/cn/company/equity-change"
   api_type <- url %>%
     stringr::str_match(., "company.*$") %>%
     stringr::str_replace_all(., "/", "_")
   create_post(
     url = url, api_type = api_type, token = token, start_date = start_date,
-    end_date = end_date, stock_codes = stock_codes
+    end_date = end_date, stock_codes = stock_code
   ) %>%
     httr::content(., as = "parsed", encoding = "utf-8") %>%
     tibble::as_tibble(.) %>%
@@ -117,13 +117,13 @@ get_cn_company_equity_change <- function(token = NULL, start_date = NULL,
     dplyr::select(-c(code, message))
 }
 
-get_cn_company_indices <- function(token = NULL, stock_codes = NULL, date = NULL) {
+get_cn_company_indices <- function(token = NULL, stock_code = NULL, date = NULL) {
   url <- "https://open.lixinger.com/api/cn/company/indices"
   api_type <- url %>%
     stringr::str_match(., "company.*$") %>%
     stringr::str_replace_all(., "/", "_")
   create_post(
-    url = url, api_type = api_type, token = token, stock_codes = stock_codes,
+    url = url, api_type = api_type, token = token, stock_codes = stock_code,
     date = date
   ) %>%
     httr::content(., as = "parsed", encoding = "utf-8") %>%
