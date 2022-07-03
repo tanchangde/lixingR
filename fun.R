@@ -49,7 +49,7 @@ create_post <- function(url = NULL, api_type = NULL, token = NULL, fs_type = NUL
   if (!is.null(stock_codes) & stock_codes_is_array) {
     temp_body$stockCodes <- stock_codes
   } else if (!is.null(stock_codes) & !stock_codes_is_array) {
-    temp_body$stockCodes <- jsonlite::unbox(stock_codes)
+    temp_body$stockCode <- jsonlite::unbox(stock_codes)
   }
   if (!is.null(date)) {
     temp_body$date <- jsonlite::unbox(date)
@@ -98,6 +98,22 @@ get_cn_company <- function(token = NULL, fs_type = NULL, mutual_markets = NULL,
     rawToChar(.) %>%
     jsonlite::fromJSON(.) %>%
     as.data.frame(.) %>%
+    dplyr::select(-c(code, message))
+}
+
+get_cn_company_equity_change <- function(token = NULL, start_date = NULL,
+                                         end_date = NULL, stock_codes = NULL) {
+  url <- "https://open.lixinger.com/api/cn/company/equity-change"
+  api_type <- url %>%
+    stringr::str_match(., "company.*$") %>%
+    stringr::str_replace_all(., "/", "_")
+  create_post(
+    url = url, api_type = api_type, token = token, start_date = start_date,
+    end_date = end_date, stock_codes = stock_codes
+  ) %>%
+    httr::content(., as = "parsed", encoding = "utf-8") %>%
+    tibble::as_tibble(.) %>%
+    tidyr::unnest_wider(., col = data) %>%
     dplyr::select(-c(code, message))
 }
 
