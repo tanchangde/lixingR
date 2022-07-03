@@ -125,3 +125,32 @@ get_cn_fundamental <- function(financial_report_type = "non_financial",
     tidyr::unnest_wider(., col = data) %>%
     dplyr::select(-c(code, message))
 }
+
+get_cn_company_fs <- function(token = NULL, fs_type = NULL, date = NULL, start_date = NULL,
+                              end_date = NULL, stock_codes = NULL, metrics = NULL) {
+  url <- switch(fs_type,
+                "bank"          = "https://open.lixinger.com/api/cn/company/fs/bank",
+                "insurance"     = "https://open.lixinger.com/api/cn/company/fs/insurance",
+                "security"      = "https://open.lixinger.com/api/cn/company/fs/security",
+                "non_financial" = "https://open.lixinger.com/api/cn/company/fs/non_financial",
+                stop("Unknown `fs_type`", call. = FALSE)
+  )
+  api_type <- url %>%
+    stringr::str_match(., "company.*$") %>%
+    stringr::str_replace_all(., "/", "_")
+  create_post(
+    url = url,
+    api_type = api_type,
+    token = token,
+    date = date,
+    start_date = start_date,
+    end_date = end_date,
+    stock_codes = stock_codes,
+    metrics = metrics
+  ) %>%
+    magrittr::use_series(content) %>%
+    rawToChar(.) %>%
+    jsonlite::fromJSON(.) %>%
+    as.data.frame(.) %>%
+    dplyr::select(-c(code, message))
+}
