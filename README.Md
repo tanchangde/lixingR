@@ -8,7 +8,7 @@ R 语言封装的理杏仁接口。
 
 * 注册或登录理杏仁后，在 [开放平台](https://www.lixinger.com/open/api/token) 获得 Token。
 * 在 R 控制台输入 `file.edit("~/.Renviron")` 后，在打开的文件中增补新行：`token_lixingren = "前文获得的 Token"`。
-* 保存并关闭 `.Renviron` 文件，然后在 R 会话中运行一遍 `fun.R` 文件，即按需可调用函数。用例待补充...
+* 保存并关闭 `.Renviron` 文件，然后在 R 会话中运行一遍 `fun.R` 文件，即按需可调用函数。
 
 ### 函数调用
 
@@ -69,27 +69,6 @@ get_cn_company_fundamental <- function(financial_report_type = "non_financial",
 | 大陆/公司/财务报表/银行   | get_cn_company_fs                             |
 | 大陆/公司/财务报表/证券   | get_cn_company_fs                             |
 | 大陆/公司/财务报表/保险   | get_cn_company_fs                             |
-
-#### 描述
-
-获取股票基本信息。
-#### 用法
-
-```r
-get_cn_company <- function(token = NULL, fs_type = NULL, mutual_markets = NULL,
-                           stock_codes = NULL, include_delisted = NULL)
-```
-#### 参数
-
-token，必选，需按
-#### 细节
-
-#### 返回值
-
-#### 例子
-
-
-
 
 ## 动机
 
