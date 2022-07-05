@@ -48,6 +48,8 @@ get_cn_company_fundamental <- function(financial_report_type = "non_financial",
 															 metrics = c("pe_ttm", "mc"))
 ```
 
+当然，若你按前文将 token 添加到了 `.Renviron` 文件，那么调用封装后的 R 函数时， token 可省略不写。
+
 ### API 与封装函数对应关系
 
 | 理性仁 API 路径           | 封装后 R 函数                                 |
