@@ -26,7 +26,7 @@ R 语言封装的理杏仁接口。
 
 ```json
 {
-	"token": "8c1e6a2b-3e45-45bc-952c-84e9df3b3d0a",
+	"token": "balalaxiaomoxian",
 	"date": "2022-07-05",
 	"stockCodes": [
 		"300750",
