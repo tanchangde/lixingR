@@ -26,16 +26,16 @@ R 语言封装的理杏仁接口。
 
 ```json
 {
-	"token": "balalaxiaomoxian",
-	"date": "2022-07-05",
-	"stockCodes": [
-		"300750",
-		"600519"
-	],
-	"metricsList": [
-		"pe_ttm",
-		"mc"
-	]
+ "token": "balalaxiaomoxian",
+ "date": "2022-07-05",
+ "stockCodes": [
+  "300750",
+  "600519"
+ ],
+ "metricsList": [
+  "pe_ttm",
+  "mc"
+ ]
 }
 ```
 
@@ -81,15 +81,15 @@ get_cn_company_fundamental <- function(financial_report_type = "non_financial",
 
 ## 目标
 
-- [x] 初级，实现大陆股票下个人关注的基本面指标查询
-	- [x] PB
-	- [x] PE
-	- [x] ROE
-	- [x] 负债率
-	- [x] 股利支付率
-* 中级，实现大部分实用指标查询
-* 中高级，打包成 R package
-* 高级，提供交互式分析服务
+* [x] 初级，实现大陆股票下个人关注的基本面指标查询
+  * [x] PB
+  * [x] PE
+  * [x] ROE
+  * [x] 负债率
+  * [x] 股利支付率
+* [ ] 中级，实现大部分实用指标查询
+* [ ] 中高级，打包成 R package
+* [ ] 高级，提供交互式分析服务
 
 ## 为什么选择理杏仁
 
@@ -108,6 +108,6 @@ get_cn_company_fundamental <- function(financial_report_type = "non_financial",
 * 220705 changde 细化使用说明
 * 220630 changde 增补用法
 * 220629 changde
-	* 调整目标优先级
-	*	增补参考文献及润色
+  * 调整目标优先级
+  * 增补参考文献及润色
 * 220627 changde init
